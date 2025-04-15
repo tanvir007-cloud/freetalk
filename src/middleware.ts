@@ -7,6 +7,16 @@ import {
 
 export default auth((req) => {
   const { nextUrl } = req;
+
+  const userAgent = req.headers.get("user-agent") || "";
+  const isBot =
+    /googlebot|bingbot|slurp|duckduckbot|facebot|facebookexternalhit|twitterbot|linkedinbot/i.test(
+      userAgent
+    );
+
+  // ✅ Allow bot access always, regardless of login status
+  if (isBot) return;
+
   const isLoggedIn = !!req.auth;
 
   const isApiAuthRoutes = nextUrl.pathname.startsWith(apiAuthPrefix);
@@ -22,16 +32,6 @@ export default auth((req) => {
     }
     return;
   }
-
-  // ✅ Bot detection
-  const userAgent = req.headers.get("user-agent") || "";
-  const isBot =
-    /googlebot|bingbot|slurp|duckduckbot|facebot|facebookexternalhit|twitterbot|linkedinbot/i.test(
-      userAgent
-    );
-
-  // ✅ Allow bot access always, regardless of login status
-  if (isBot) return;
 
   // ✅ If user is not logged in, redirect to login
   if (!isLoggedIn) {
