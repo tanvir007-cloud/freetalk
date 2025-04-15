@@ -10,8 +10,8 @@ import { PostType } from "@/lib/zodValidation";
 import { isValidObjectId } from "@/lib/helper";
 import { cn } from "@/lib/utils";
 import { Metadata } from "next";
-import { Post, User } from "@prisma/client";
 import SinglePost from "./components/SinglePost";
+import { Post, User } from "@prisma/client";
 
 export async function generateMetadata({
   searchParams,
@@ -48,11 +48,13 @@ export async function generateMetadata({
     title: `${post.user.name} - ${postTitle}`,
     description: postDescription,
     keywords: `Freetalk, ${post.user.name}, Social Media, Post, Friends`,
-    alternates: { canonical: `/?postId=${postId}` },
+    alternates: {
+      canonical: `https://freetalk-whdr.onrender.com/?postId=${postId}`,
+    },
     openGraph: {
       title: `${post.user.name} - ${postTitle}`,
       description: postDescription,
-      url: `https://yourfreetalk.com?postId=${postId}`,
+      url: `https://freetalk-whdr.onrender.com/?postId=${postId}`,
       siteName: "Freetalk",
       images: [
         {
@@ -78,7 +80,6 @@ export async function generateMetadata({
   };
 }
 
-
 export default async function Home({
   searchParams,
 }: {
@@ -92,7 +93,6 @@ export default async function Home({
 
   let post: PostType | null = null;
 
-  
   if (postId) {
     if (isValidObjectId(postId)) {
       const friends = await db.friend.findMany({
@@ -101,11 +101,11 @@ export default async function Home({
         },
         select: { userId: true, friendId: true },
       });
-    
+
       const friendIds = friends.map((item) =>
         item.userId === currentUser.id ? item.friendId : item.userId
       );
-      
+
       post = await db.post.findFirst({
         where: { id: postId },
         include: {

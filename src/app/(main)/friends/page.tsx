@@ -10,18 +10,18 @@ export async function generateMetadata(): Promise<Metadata> {
     description:
       "View and manage all your friend requests on Freetalk. Accept or reject friend requests easily.",
     alternates: {
-      canonical: "https://yourfreetalk.com/friends",
+      canonical: "https://freetalk-whdr.onrender.com/friends",
     },
     openGraph: {
       title: "Friend Requests | Freetalk",
       description:
         "View and manage all your friend requests on Freetalk. Accept or reject friend requests easily.",
-      url: "https://yourfreetalk.com/friends",
+      url: "https://freetalk-whdr.onrender.com/friends",
       siteName: "Freetalk",
       type: "website",
       images: [
         {
-          url: "https://yourfreetalk.com/meta-image.jpg",
+          url: "https://freetalk-whdr.onrender.com/opengraph.png",
           width: 1200,
           height: 630,
           alt: "Freetalk Friend Requests",
@@ -33,11 +33,10 @@ export async function generateMetadata(): Promise<Metadata> {
       title: "Friend Requests | Freetalk",
       description:
         "View and manage all your friend requests on Freetalk. Accept or reject friend requests easily.",
-      images: ["https://yourfreetalk.com/meta-image.jpg"],
+      images: ["https://freetalk-whdr.onrender.com/opengraph.png"],
     },
   };
 }
-
 
 const FriendPage = async () => {
   const currentUser = await getCurrentUser();
@@ -54,4 +53,3 @@ const FriendPage = async () => {
 };
 
 export default FriendPage;
-

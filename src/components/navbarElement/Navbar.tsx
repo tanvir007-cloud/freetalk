@@ -10,14 +10,14 @@ import { Karla } from "next/font/google";
 import { User } from "@prisma/client";
 import { SheetTrigger } from "../ui/sheet";
 
-const karla = Karla({ subsets: ["latin"], weight: ["700"] });
+const karla = Karla({ subsets: ["latin"] });
 
 const Navbar = async ({ currentUser }: { currentUser: User }) => {
   return (
     <div className="flex md:flex-row flex-col md:justify-between h-full md:gap-x-6">
       <div className="flex items-center justify-between px-4 md:hidden pt-1">
         <h1
-          className={`${karla.className} text-3xl text-blue-600 dark:text-white`}
+          className={`${karla.className} text-3xl text-zinc-900 dark:text-white font-[750]`}
         >
           freetalk
         </h1>

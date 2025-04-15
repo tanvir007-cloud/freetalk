@@ -31,8 +31,8 @@ export async function generateMetadata({
 
   if (!profileUser) return { title: "Profile Not Found" };
 
-  const fallbackImage = "https://yourfreetalk.com/avatar.jpg";
-  const profileUrl = `https://yourfreetalk.com/profile/${profileUser.id}`;
+  const fallbackImage = "https://freetalk-whdr.onrender.com/avater.jpg";
+  const profileUrl = `https://freetalk-whdr.onrender.com/profile/${profileUser.id}`;
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -75,7 +75,6 @@ export async function generateMetadata({
     },
   };
 }
-
 
 const ProfilePage = async ({
   params,

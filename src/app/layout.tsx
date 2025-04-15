@@ -24,44 +24,52 @@ export const metadata: Metadata = {
     "Join Freetalk to connect with friends, share updates, and discover communities.",
   keywords:
     "Freetalk, social media, connect, friends, share, posts, communities",
-  authors: [{ name: "Your Name", url: "https://yourwebsite.com" }],
-  metadataBase: new URL("https://yourfreetalk.com"),
+  authors: [{ name: "Your Name", url: "https://freetalk-whdr.onrender.com" }],
+  metadataBase: new URL("https://freetalk-whdr.onrender.com"),
   alternates: {
-    canonical: "https://yourfreetalk.com",
+    canonical: "https://freetalk-whdr.onrender.com",
   },
   robots: {
     index: true,
     follow: true,
   },
+
   openGraph: {
     title: "Freetalk - Connect with Friends",
     description:
       "Join Freetalk to connect with friends, share updates, and discover communities.",
-    url: "https://yourfreetalk.com",
+    url: "https://freetalk-whdr.onrender.com",
     siteName: "Freetalk",
     images: [
       {
-        url: "/icons8-facebook-logo-color-152.png",
+        url: "https://freetalk-whdr.onrender.com/opengraph.png", // Full URL is safer for OG
         width: 1200,
         height: 630,
         alt: "Freetalk",
       },
     ],
+    locale: "en_US",
     type: "website",
   },
+
   twitter: {
     card: "summary_large_image",
     title: "Freetalk - Connect with Friends",
     description:
       "Join Freetalk to connect with friends, share updates, and discover communities.",
-    images: ["/icons8-facebook-logo-color-152.png"],
+    images: ["https://freetalk-whdr.onrender.com/opengraph.png"],
   },
+
   icons: {
-    icon: "/favicon.png",
-    apple: "/favicon.png",
+    icon: [
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [
+      { url: "/favicon-180x180.png", sizes: "180x180", type: "image/png" },
+    ],
   },
 };
-
 
 export default function RootLayout({
   children,
@@ -70,27 +78,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        {/* Structured Data (JSON-LD) */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "SocialNetwork",
-              name: "Facebook Clone",
-              url: "https://yourfacebookclone.com",
-              logo: "https://yourfacebookclone.com/icons8-facebook-logo-color-152.png",
-              description:
-                "A social media platform where you can connect with friends, share posts, and discover communities.",
-              sameAs: [
-                "https://twitter.com/yourusername",
-                "https://linkedin.com/in/yourusername",
-              ],
-            }),
-          }}
-        />
-      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

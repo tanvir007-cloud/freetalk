@@ -1,25 +1,43 @@
 import React from "react";
 import Link from "next/link";
 import { Metadata } from "next";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import SigninForm from "./components/SigninForm";
 import Social from "@/components/navbarElement/Social";
 
 export const generateMetadata = (): Metadata => {
   return {
-    title: "Sign Up | Facebook Clone",
-    description: "Create a new account to join Facebook Clone and connect with friends.",
+    title: "Sign Up | Freetalk",
+    description:
+      "Create your Freetalk account to connect with friends and communities.",
     openGraph: {
-      title: "Sign Up | Facebook Clone",
-      description: "Create a new account to join Facebook Clone and connect with friends.",
-      url: "https://yourfacebookclone.com/signin",
-      siteName: "Facebook Clone",
+      title: "Sign Up | Freetalk",
+      description:
+        "Create your Freetalk account to connect with friends and communities.",
+      url: "https://freetalk-whdr.onrender.com/signin",
+      images: [
+        {
+          url: "https://freetalk-whdr.onrender.com/opengraph.png", // Full URL is safer for OG
+          width: 1200,
+          height: 630,
+          alt: "Freetalk",
+        },
+      ],
+      siteName: "Freetalk",
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
-      title: "Sign Up | Facebook Clone",
-      description: "Create a new account to join Facebook Clone and connect with friends.",
+      title: "Sign Up | Freetalk",
+      description:
+        "Create your Freetalk account to connect with friends and communities.",
+      images: ["https://freetalk-whdr.onrender.com/opengraph.png"],
     },
   };
 };
@@ -45,7 +63,10 @@ const SigninPage = () => {
           <SigninForm />
           <div className="text-center text-sm mt-2">
             Already have an account?{" "}
-            <Link href="/login" className="underline underline-offset-4 text-primary">
+            <Link
+              href="/login"
+              className="underline underline-offset-4 text-primary"
+            >
               Login
             </Link>
           </div>
@@ -56,6 +77,3 @@ const SigninPage = () => {
 };
 
 export default SigninPage;
-
-
-

@@ -1,22 +1,16 @@
-import { Facebook } from "lucide-react";
-import Link from "next/link";
 import React, { Fragment } from "react";
 import Search from "./Search";
 import SearchBox from "./SearchBox";
 import NavbarItem from "./NavbarItem";
 import UserAccountNav from "./UserAccountNav";
 import { User } from "@prisma/client";
+import Logo from "../Logo";
 
 const DesktopNavbar = ({ currentUser }: { currentUser: User }) => {
   return (
     <Fragment>
       <div className="md:flex hidden items-center gap-x-4">
-        <Link
-          href={"/"}
-          className="bg-blue-600 inline-block rounded-full p-1 px-[5px]"
-        >
-          <Facebook className="fill-white stroke-transparent" size={36} />
-        </Link>
+        <Logo/>
         <div className="lg:hidden block">
           <Search />
         </div>

@@ -14,19 +14,28 @@ import Social from "@/components/navbarElement/Social";
 
 export const generateMetadata = (): Metadata => {
   return {
-    title: "Login | Facebook Clone",
-    description: "Login to your Facebook Clone account using Google or GitHub.",
+    title: "Login | Freetalk",
+    description: "Login to your Freetalk account using Google or GitHub.",
     openGraph: {
-      title: "Login | Facebook Clone",
-      description: "Login to your Facebook Clone account using Google or GitHub.",
-      url: "https://yourfacebookclone.com/login",
-      siteName: "Facebook Clone",
+      title: "Login | Freetalk",
+      description: "Login to your Freetalk account using Google or GitHub.",
+      url: "https://freetalk-whdr.onrender.com/login",
+      images: [
+        {
+          url: "https://freetalk-whdr.onrender.com/opengraph.png", // Full URL is safer for OG
+          width: 1200,
+          height: 630,
+          alt: "Freetalk",
+        },
+      ],
+      siteName: "Freetalk",
       type: "website",
     },
     twitter: {
-      card: "summary",
-      title: "Login | Facebook Clone",
-      description: "Login to your Facebook Clone account using Google or GitHub.",
+      card: "summary_large_image",
+      title: "Login | Freetalk",
+      description: "Login to your Freetalk account using Google or GitHub.",
+      images: ["https://freetalk-whdr.onrender.com/opengraph.png"],
     },
   };
 };
