@@ -17,7 +17,6 @@ const SearchInput = ({ userId }: { userId: string }) => {
   const { open, setOpen } = useZustandStore();
   const divRef = useRef<HTMLDivElement>(null);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
-
   const [debouncedKeyword, setDebouncedKeyword] = useState("");
 
   const debounceSearch = useMemo(

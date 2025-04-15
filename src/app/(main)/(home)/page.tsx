@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { Metadata } from "next";
 import SinglePost from "./components/SinglePost";
 import { Post, User } from "@prisma/client";
+import { redirect } from "next/navigation";
 
 export async function generateMetadata({
   searchParams,
@@ -89,7 +90,7 @@ export default async function Home({
 
   const currentUser = await getCurrentUser();
 
-  if (!currentUser) return "/login";
+  if (!currentUser) return redirect("/login");
 
   let post: PostType | null = null;
 

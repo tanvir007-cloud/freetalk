@@ -84,7 +84,7 @@ const ProfilePage = async ({
   const { profileId } = await params;
   const currentUser = await getCurrentUser();
 
-  if (!currentUser) return redirect("/");
+  if (!currentUser) return redirect("/login");
 
   const isCurrentUserProfile = currentUser.id === profileId;
 

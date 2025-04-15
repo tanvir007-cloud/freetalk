@@ -10,6 +10,8 @@ import {
 } from "@/components/ui/card";
 import SigninForm from "./components/SigninForm";
 import Social from "@/components/navbarElement/Social";
+import getCurrentUserId from "@/app/getActions/getCurrentUserId";
+import { redirect } from "next/navigation";
 
 export const generateMetadata = (): Metadata => {
   return {
@@ -42,7 +44,9 @@ export const generateMetadata = (): Metadata => {
   };
 };
 
-const SigninPage = () => {
+const SigninPage = async() => {
+  const currentUserId = await getCurrentUserId()
+  if(currentUserId) return redirect("/")
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
       <Card className="md:max-w-md sm:max-w-md w-[90%]">

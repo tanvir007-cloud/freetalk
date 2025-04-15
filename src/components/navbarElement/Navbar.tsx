@@ -9,10 +9,12 @@ import Menu from "./Menu";
 import { Karla } from "next/font/google";
 import { User } from "@prisma/client";
 import { SheetTrigger } from "../ui/sheet";
+import { redirect } from "next/navigation";
 
 const karla = Karla({ subsets: ["latin"] });
 
-const Navbar = async ({ currentUser }: { currentUser: User }) => {
+const Navbar = async ({ currentUser }: { currentUser: User | null }) => {
+  if (!currentUser) return redirect("/login");
   return (
     <div className="flex md:flex-row flex-col md:justify-between h-full md:gap-x-6">
       <div className="flex items-center justify-between px-4 md:hidden pt-1">
