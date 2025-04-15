@@ -12,10 +12,10 @@ export default auth((req) => {
   const isApiAuthRoutes = nextUrl.pathname.startsWith(apiAuthPrefix);
   const isAuthRoutes = authRoutes.includes(nextUrl.pathname);
 
-  // ✅ Allow all API auth routes without auth
+  // ✅ Allow all API auth routes
   if (isApiAuthRoutes) return;
 
-  // ✅ If trying to access /login or /signin while logged in, redirect to home
+  // ✅ Prevent logged in user from accessing login/signup
   if (isAuthRoutes) {
     if (isLoggedIn) {
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
@@ -23,24 +23,17 @@ export default auth((req) => {
     return;
   }
 
-  // ✅ 🧠 SEO Bot Detection
+  // ✅ Bot detection
   const userAgent = req.headers.get("user-agent") || "";
   const isBot =
-    userAgent.includes("Googlebot") ||
-    userAgent.includes("bingbot") ||
-    userAgent.includes("Slurp") || // Yahoo
-    userAgent.includes("DuckDuckBot") ||
-    userAgent.includes("facebot") ||
-    userAgent.includes("facebookexternalhit") ||
-    userAgent.includes("Twitterbot") ||
-    userAgent.includes("LinkedInBot");
+    /googlebot|bingbot|slurp|duckduckbot|facebot|facebookexternalhit|twitterbot|linkedinbot/i.test(
+      userAgent
+    );
 
-  // ✅ Allow bot access even if not logged in
-  if (!isLoggedIn && isBot) {
-    return;
-  }
+  // ✅ Allow bot access always, regardless of login status
+  if (isBot) return;
 
-  // ✅ Redirect logged-out human users to /login
+  // ✅ If user is not logged in, redirect to login
   if (!isLoggedIn) {
     return Response.redirect(new URL("/login", nextUrl));
   }
@@ -48,6 +41,7 @@ export default auth((req) => {
   return;
 });
 
+// ✅ Only secure routes
 export const config = {
-  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+  matcher: ["/", "/profile/:path*", "/friends", "/login", "/signin"],
 };
