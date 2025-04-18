@@ -7,7 +7,7 @@ const UseGlobal = ({
   post,
 }: {
   post: PostType;
-  currentUserId: string;
+  currentUserId: string|undefined;
 }) => {
   const isLike = post.likes.some((like) => like.userId === currentUserId);
 

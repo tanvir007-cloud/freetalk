@@ -1,6 +1,5 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import React from "react";
-import ProfileCard from "../../profile/components/ProfileCard";
 import Link from "next/link";
 import { GiPostStamp } from "react-icons/gi";
 import {
@@ -14,6 +13,7 @@ import {
   Store,
   Video,
 } from "lucide-react";
+import ProfileCard from "@/app/(main)/profile/components/ProfileCard";
 
 const routes = [
   {

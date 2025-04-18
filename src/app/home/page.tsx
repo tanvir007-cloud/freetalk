@@ -1,17 +1,22 @@
-import Navbar from "@/components/navbarElement/Navbar";
-import React, { Fragment } from "react";
-import getCurrentUser from "../getActions/getCurrentUser";
-import InternetPage from "@/components/InternetPage";
-import SearchInput from "@/components/navbarElement/SearchInput";
+import getCurrentUser from "@/app/getActions/getCurrentUser";
 import { cn } from "@/lib/utils";
+import { redirect } from "next/navigation";
+import Navbar from "@/components/navbarElement/Navbar";
+import { Fragment } from "react";
 import Logo from "@/components/Logo";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
+import InternetPage from "@/components/InternetPage";
+import SearchInput from "@/components/navbarElement/SearchInput";
+import HomePageElement from "./components/HomePageElement";
 
-const MainLayout = async ({ children }: { children: React.ReactNode }) => {
+const HomePage = async () => {
   const currentUser = await getCurrentUser();
+
+  if (!currentUser) return redirect("/");
+
   return (
-    <div className="relative">
+    <div>
       <InternetPage />
       {currentUser && <SearchInput userId={currentUser.id} />}
       <div
@@ -33,10 +38,9 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
           </Fragment>
         )}
       </div>
-
-      <div className="w-full">{children}</div>
+      <HomePageElement currentUser={currentUser} />
     </div>
   );
 };
 
-export default MainLayout;
+export default HomePage;

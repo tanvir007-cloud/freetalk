@@ -1,4 +1,5 @@
 import { likePost } from "@/app/actions/addLike";
+import { useZustandStore } from "@/hooks/use-zustand-store";
 import { cn } from "@/lib/utils";
 import { socket } from "@/socket";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -12,6 +13,7 @@ const IsYouLike = ({
   setState,
   queryKey,
   postUserId,
+  currentUserId,
 }: {
   postUserId: string;
   postId: string;
@@ -25,8 +27,10 @@ const IsYouLike = ({
     }>
   >;
   queryKey: string[];
+  currentUserId: string | undefined;
 }) => {
   const queryClient = useQueryClient();
+  const { setLoginOpen } = useZustandStore();
 
   const { mutate: togglePostLike, isPending } = useMutation({
     mutationFn: async ({
@@ -60,7 +64,9 @@ const IsYouLike = ({
   };
 
   return (
-    <form action={() => handleLike(postId)}>
+    <form
+      action={() => (currentUserId ? handleLike(postId) : setLoginOpen(true))}
+    >
       <button
         className={cn(
           "flex items-center gap-2 text-sm  dark:hover:bg-zinc-800 dark:text-zinc-400 text-zinc-600 hover:bg-zinc-200 px-4 py-1 rounded-sm transition cursor-pointer"

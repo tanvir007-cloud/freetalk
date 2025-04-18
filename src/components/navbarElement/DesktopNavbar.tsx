@@ -5,11 +5,12 @@ import NavbarItem from "./NavbarItem";
 import UserAccountNav from "./UserAccountNav";
 import { User } from "@prisma/client";
 import Logo from "../Logo";
+import { cn } from "@/lib/utils";
 
 const DesktopNavbar = ({ currentUser }: { currentUser: User }) => {
   return (
     <Fragment>
-      <div className="md:flex hidden items-center gap-x-4">
+      <div className={cn("md:flex hidden items-center gap-x-4")}>
         <Logo/>
         <div className="lg:hidden block">
           <Search />

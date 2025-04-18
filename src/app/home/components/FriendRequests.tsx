@@ -3,13 +3,13 @@ import Avatar from "@/components/Avatar";
 import { Check, X } from "lucide-react";
 import Link from "next/link";
 import React, { useTransition } from "react";
-import { friendType } from "../../friends/components/AllFriendRequest";
 import {
   confirmFriendRequest,
   rejectFriendRequest,
 } from "@/app/actions/friendAction";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { friendType } from "@/app/(main)/friends/components/AllFriendRequest";
 
 const FriendRequests = ({
   friendRequests,

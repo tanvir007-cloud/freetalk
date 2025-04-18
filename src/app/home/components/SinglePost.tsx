@@ -14,7 +14,7 @@ const SinglePost = ({
   post,
 }: {
   post: PostType | null;
-  currentUser: User;
+  currentUser: User | null;
 }) => {
   return (
     <div className="fixed inset-0 h-screen w-screen flex items-center justify-center z-50">
@@ -74,7 +74,7 @@ const PostFunction = ({
   currentUser,
 }: {
   post: PostType;
-  currentUser: User;
+  currentUser: User | null;
 }) => {
   const {
     addOptimisticComment,
@@ -84,7 +84,7 @@ const PostFunction = ({
     setCommentState,
     setState,
     state,
-  } = UseGlobal({ currentUserId: currentUser.id, post });
+  } = UseGlobal({ currentUserId: currentUser?.id, post });
   return (
     <Comment
       pendingChildren={
@@ -99,7 +99,7 @@ const PostFunction = ({
       post={post}
       paramKey="postId"
       apiUrl="/api/postComment"
-      queryKey={["posts", currentUser.id]}
+      queryKey={["posts", currentUser ? currentUser.id : ""]}
       addOptimisticComment={addOptimisticComment}
       addOptimisticCount={addOptimisticCount}
       optimisticComment={optimisticComment}

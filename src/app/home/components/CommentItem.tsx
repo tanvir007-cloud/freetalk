@@ -119,10 +119,10 @@ const CommentItem = ({
   };
 
   useEffect(() => {
-    if (open && comment.userId !== currentUser.id) {
+    if (currentUser && open && comment.userId !== currentUser.id) {
       form.setValue("comment", `${comment.user.name} `);
     }
-  }, [open,comment.user.name,comment.userId,currentUser.id,form]);
+  }, [open,comment.user.name,comment.userId,currentUser,form]);
 
   return (
     <Fragment>

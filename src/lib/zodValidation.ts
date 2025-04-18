@@ -53,7 +53,7 @@ export type PostType = Post & {
   user: User;
   sharePost?: (Post & { user: User }) | null;
   _count: { likes: number; comments: number; sharedBy: number };
-  likes: (Like & { user: User })[];
+  likes: (Like & { user: { name: string } })[];
 };
 
 export type LikeType = Like & {

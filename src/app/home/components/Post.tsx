@@ -59,6 +59,7 @@ const Post = ({
             setState={setState}
             postId={post.id}
             isLike={optimisticCount.isLike}
+            currentUserId={currentUser?.id}
           />
           <DialogPostComment
             queryKey={queryKey}

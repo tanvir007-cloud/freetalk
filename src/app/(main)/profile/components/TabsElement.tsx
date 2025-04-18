@@ -7,23 +7,25 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FaCaretDown } from "react-icons/fa";
-import Feed from "../../(home)/components/Feed";
 import UserInfoCard from "./UserInfoCard";
 import UserMediaCard from "./UserMediaCard";
-import AddPost from "../../(home)/components/AddPost";
 import UserFriendCard from "./UserFriendCard";
 import { User } from "@prisma/client";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import AllPhotos from "../[profileId]/components/AllPhotos";
 import LockProfile from "./LockProfile";
 import AllMyFriends from "./AllMyFriends";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
+import AddPost from "@/app/home/components/AddPost";
+import Feed from "@/app/home/components/Feed";
 
 const TabsElement = ({
   isCurrentUserProfile,
   currentUser,
   profileUser,
 }: {
-  currentUser: User;
+  currentUser: User | null;
   isCurrentUserProfile: boolean;
   profileUser: User;
 }) => {
@@ -111,20 +113,34 @@ const TabsElement = ({
           </div>
 
           <div className="flex flex-col md:gap-6 sm:gap-3 gap-2 w-full max-w-2xl">
-            {isCurrentUserProfile && (
+            {isCurrentUserProfile && currentUser && (
               <AddPost
                 currentUser={currentUser}
                 type="PROFILE"
                 queryKey={["myPosts", profileUser.id]}
               />
             )}
-            <Feed
-              currentUser={currentUser}
-              apiUrl={`/api/myPosts`}
-              queryKey={["myPosts", profileUser.id]}
-              paramKey="userId"
-              paramValue={profileUser.id}
-            />
+            {currentUser ? (
+              <Feed
+                currentUser={currentUser}
+                apiUrl={`/api/myPosts`}
+                queryKey={["myPosts", profileUser.id]}
+                paramKey="userId"
+                paramValue={profileUser.id}
+              />
+            ) : (
+              <div className="flex items-center justify-center py-5 flex-col gap-y-3 bg-white dark:bg-zinc-900 sm:shadow-md shadow-sm md:rounded-md px-4">
+                <h1 className="text-3xl font-bold text-zinc-500 text-center">
+                  Login or Sign up for Freetalk to see all this user posts.
+                </h1>
+                <Link
+                  href={"/login"}
+                  className={buttonVariants({ size: "lg" })}
+                >
+                  Login Freetalk
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </TabsContent>
@@ -145,7 +161,10 @@ const TabsElement = ({
           />
         </div>
       </TabsContent>
-      <TabsContent value="friends" className="w-full max-w-5xl md:px-7 my-2 md:my-6 sm:my-3">
+      <TabsContent
+        value="friends"
+        className="w-full max-w-5xl md:px-7 my-2 md:my-6 sm:my-3"
+      >
         <AllMyFriends
           profileUserId={profileUser.id}
           isCurrentUserProfile={isCurrentUserProfile}

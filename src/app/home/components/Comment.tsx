@@ -31,9 +31,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { socket } from "@/socket";
 import toast from "react-hot-toast";
 import useObserver from "@/hooks/use-observer";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 
 interface CommentProps {
-  currentUser: User;
+  currentUser: User | null;
   queryKey: string[];
   apiUrl: string;
   paramKey: string;
@@ -112,6 +114,7 @@ const Comment = ({
   const { isOnline } = UseOnline(refetch);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (!currentUser) return;
     const { newComment } = dummyComment({
       comment: values.comment,
       currentUser,
@@ -213,6 +216,7 @@ const Comment = ({
           <div>
             <div className="flex items-center justify-evenly mb-1 gap-2">
               <IsYouLike
+                currentUserId={currentUser?.id}
                 postUserId={post.userId}
                 queryKey={queryKey}
                 postId={post.id}
@@ -236,71 +240,86 @@ const Comment = ({
               <Separator />
             </div>
           </div>
-
-          {!hasNextPage && optimisticComment.comments.length === 0 ? (
-            <div className="flex items-center justify-center py-5 flex-col">
-              <h1 className="text-xl font-bold text-zinc-500">
-                No comments yet 😐😐
-              </h1>
-            </div>
-          ) : (
-            <div className="flex flex-col gap-3 px-4">
-              <span className="text-zinc-700 font-medium dark:text-zinc-400 cursor-pointer flex items-center gap-0.5">
-                Most relevant
-                <FaCaretDown />
-              </span>
-              <div className="flex flex-col gap-1 mb-1">
-                {optimisticComment.comments.map(
-                  (comment: CommentType, index: number) => {
-                    const isLastItem =
-                      index === optimisticComment.comments.length - 1;
-                    return (
-                      <div
-                        ref={(el) => {
-                          if (el) {
-                            if (isLastItem) attachObserver(el);
-                            if (index === 0) firstCommentRef.current = el;
-                          }
-                        }}
-                        className={cn(
-                          "flex flex-col",
-                          comment.id.startsWith("temp-") &&
-                            "bg-zinc-300/50 dark:bg-zinc-700/30 animate-pulse"
-                        )}
-                        key={comment.id}
-                      >
-                        <CommentItem
-                          previousQueryKey={queryKey}
-                          addOptimisticComment={addOptimisticComment}
-                          setCommentState={setCommentState}
-                          queryKey={["comments", post.id]}
-                          postId={post.id}
-                          comment={comment}
-                          currentUser={currentUser}
-                          postUserId={post.userId}
-                        />
-                      </div>
-                    );
-                  }
-                )}
-                {(isFetchingNextPage || (!isOnline && hasNextPage)) && (
-                  <div className="w-full flex items-center justify-center pb-2">
-                    <Loader2 className="text-blue-600 animate-spin" size={30} />
-                  </div>
-                )}
+          {currentUser ? (
+            !hasNextPage && optimisticComment.comments.length === 0 ? (
+              <div className="flex items-center justify-center py-5 flex-col">
+                <h1 className="text-xl font-bold text-zinc-500">
+                  No comments yet 😐😐
+                </h1>
               </div>
+            ) : (
+              <div className="flex flex-col gap-3 px-4">
+                <span className="text-zinc-700 font-medium dark:text-zinc-400 cursor-pointer flex items-center gap-0.5">
+                  Most relevant
+                  <FaCaretDown />
+                </span>
+                <div className="flex flex-col gap-1 mb-1">
+                  {optimisticComment.comments.map(
+                    (comment: CommentType, index: number) => {
+                      const isLastItem =
+                        index === optimisticComment.comments.length - 1;
+                      return (
+                        <div
+                          ref={(el) => {
+                            if (el) {
+                              if (isLastItem) attachObserver(el);
+                              if (index === 0) firstCommentRef.current = el;
+                            }
+                          }}
+                          className={cn(
+                            "flex flex-col",
+                            comment.id.startsWith("temp-") &&
+                              "bg-zinc-300/50 dark:bg-zinc-700/30 animate-pulse"
+                          )}
+                          key={comment.id}
+                        >
+                          <CommentItem
+                            previousQueryKey={queryKey}
+                            addOptimisticComment={addOptimisticComment}
+                            setCommentState={setCommentState}
+                            queryKey={["comments", post.id]}
+                            postId={post.id}
+                            comment={comment}
+                            currentUser={currentUser}
+                            postUserId={post.userId}
+                          />
+                        </div>
+                      );
+                    }
+                  )}
+                  {(isFetchingNextPage || (!isOnline && hasNextPage)) && (
+                    <div className="w-full flex items-center justify-center pb-2">
+                      <Loader2
+                        className="text-blue-600 animate-spin"
+                        size={30}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            )
+          ) : (
+            <div className="flex items-center justify-center py-5 flex-col gap-y-2.5 mb-4">
+              <h1 className="text-xl font-bold text-zinc-500 text-center">
+                Login or Sign up for Freetalk to see all this comments.
+              </h1>
+              <Link href={"/login"} className={buttonVariants({size:"lg"})}>
+                Login Freetalk
+              </Link>
             </div>
           )}
         </div>
       </ScrollArea>
-      <div className="w-full dark:bg-zinc-950 bg-white px-4 py-2 sm:rounded-b-lg border-t dark:border-zinc-800 border-zinc-200">
-        <CommentBox
-          currentUser={currentUser}
-          form={form}
-          placeholder="Write a comment..."
-          onSubmit={onSubmit}
-        />
-      </div>
+      {currentUser && (
+        <div className="w-full dark:bg-zinc-950 bg-white px-4 py-2 sm:rounded-b-lg border-t dark:border-zinc-800 border-zinc-200">
+          <CommentBox
+            currentUser={currentUser}
+            form={form}
+            placeholder="Write a comment..."
+            onSubmit={onSubmit}
+          />
+        </div>
+      )}
     </Fragment>
   );
 };

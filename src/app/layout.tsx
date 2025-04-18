@@ -1,9 +1,12 @@
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import QueryProvider from "@/components/QueryProvider";
 import { Toaster } from "react-hot-toast";
+import type { Metadata, Viewport } from "next";
+import { auth } from "@/auth/auth";
+import Script from "next/script";
+import LoginModal from "@/components/LoginModal";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,34 +18,39 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export async function generateViewport(): Promise<Viewport> {
+  return {
+    width: "device-width",
+    initialScale: 1,
+  };
+}
+
+const url = process.env.NEXT_PUBLIC_BASE_URL || "https://freetalk-whdr.onrender.com";
+const ogImage = `${url}/opengraph.png`;
+const baseTitle = "Freetalk - Social Media Platform";
+const description =
+  "Connect with friends, share updates, and join communities on Freetalk.";
+
 export const metadata: Metadata = {
   title: {
-    default: "Freetalk - Connect with Friends",
+    default: baseTitle,
     template: "%s | Freetalk",
   },
-  description:
-    "Join Freetalk to connect with friends, share updates, and discover communities.",
-  keywords:
-    "Freetalk, social media, connect, friends, share, posts, communities",
-  authors: [{ name: "Your Name", url: "https://freetalk-whdr.onrender.com" }],
-  metadataBase: new URL("https://freetalk-whdr.onrender.com"),
+  description,
+  authors: [{ name: "Freetalk Team", url }],
+  metadataBase: new URL(url),
   alternates: {
-    canonical: "https://freetalk-whdr.onrender.com",
+    canonical: url,
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
-
+  robots: { index: true, follow: true },
   openGraph: {
-    title: "Freetalk - Connect with Friends",
-    description:
-      "Join Freetalk to connect with friends, share updates, and discover communities.",
-    url: "https://freetalk-whdr.onrender.com",
+    title: baseTitle,
+    description,
+    url,
     siteName: "Freetalk",
     images: [
       {
-        url: "https://freetalk-whdr.onrender.com/opengraph.png", // Full URL is safer for OG
+        url: ogImage,
         width: 1200,
         height: 630,
         alt: "Freetalk",
@@ -51,15 +59,12 @@ export const metadata: Metadata = {
     locale: "en_US",
     type: "website",
   },
-
   twitter: {
     card: "summary_large_image",
-    title: "Freetalk - Connect with Friends",
-    description:
-      "Join Freetalk to connect with friends, share updates, and discover communities.",
-    images: ["https://freetalk-whdr.onrender.com/opengraph.png"],
+    title: baseTitle,
+    description,
+    images: [ogImage],
   },
-
   icons: {
     icon: [
       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
@@ -71,22 +76,46 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const currentUser = !!(await auth());
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <meta name="theme-color" content="#f2f4f7" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Script
+          id="theme-color-script"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                const setThemeColor = () => {
+                  const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  const meta = document.querySelector('meta[name="theme-color"]') || document.createElement('meta');
+                  meta.setAttribute('name', 'theme-color');
+                  meta.setAttribute('content', isDark ? '#09090b' : '#f2f4f7');
+                  if (!meta.parentNode) document.head.appendChild(meta);
+                };
+                setThemeColor();
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', setThemeColor);
+              })();
+            `,
+          }}
+        />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
+          <LoginModal currentUser={currentUser} />
           <Toaster />
           <QueryProvider>{children}</QueryProvider>
         </ThemeProvider>

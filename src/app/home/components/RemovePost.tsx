@@ -26,20 +26,21 @@ const RemovePost = ({
   openRemove: boolean;
   setOpenRemove: Dispatch<SetStateAction<boolean>>;
   isPostAuther: boolean;
-  currentUserId: string;
+  currentUserId: string | undefined;
 }) => {
   const queryClient = useQueryClient();
   const [isPending, startTransition] = useTransition();
 
   const handleRemove = () => {
+    if (!currentUserId) return;
     startTransition(async () => {
       const data = await removeMyPost(isPostAuther, postId);
 
-      if (data.error) toast.error(data.error)
+      if (data.error) toast.error(data.error);
 
       if (data.success) {
         queryClient.invalidateQueries({ queryKey: ["posts", currentUserId] });
-        toast.success(data.success)
+        toast.success(data.success);
         setOpenRemove(false);
       }
     });

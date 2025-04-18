@@ -6,6 +6,7 @@ interface usePostQueryProps {
   apiUrl: string;
   paramKey?: string;
   paramValue?: string;
+  
 }
 
 export const usePostQuery = ({

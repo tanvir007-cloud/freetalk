@@ -30,7 +30,7 @@ const PostMainPart = ({
   shareCount,
   commentCount,
 }: {
-  currentUser: User;
+  currentUser: User | null;
   post: PostType;
   open?: boolean;
   setOpen?: Dispatch<SetStateAction<boolean>>;
@@ -41,7 +41,8 @@ const PostMainPart = ({
 }) => {
   const [openDropdown, setOpenDropdown] = useState(false);
   const [openRemove, setOpenRemove] = useState(false);
-  const isPostAuther = currentUser.id === post.userId;
+  let isPostAuther = false;
+  if (currentUser) isPostAuther = currentUser.id === post.userId;
   return (
     <Fragment>
       <div className="flex items-center justify-between px-4 pt-4">
@@ -73,7 +74,7 @@ const PostMainPart = ({
         )}
 
         <RemovePost
-          currentUserId={currentUser.id}
+          currentUserId={currentUser?.id}
           openRemove={openRemove}
           setOpenRemove={setOpenRemove}
           isPostAuther={isPostAuther}

@@ -10,8 +10,14 @@ export async function GET(req: Request) {
     const currentUserId = await getCurrentUserId();
     const { searchParams } = new URL(req.url);
 
+    let comments: Comment[] = [];
+    let nextCursor = null;
+
     if (!currentUserId) {
-      return new NextResponse("Unauthorized", { status: 401 });
+      return NextResponse.json({
+        comments,
+        nextCursor,
+      });
     }
 
     const cursor = searchParams.get("cursor");
@@ -27,9 +33,6 @@ export async function GET(req: Request) {
     });
 
     if (!post) return new NextResponse("Post not found", { status: 401 });
-
-    let comments: Comment[] = [];
-    let nextCursor = null;
 
     if (!cursor) {
       const userComments = await db.comment.findMany({
