@@ -11,7 +11,7 @@ import React, {
 import EditComment from "./EditComment";
 import { GiMicrophone } from "react-icons/gi";
 import Trim from "@/components/Trim";
-import { formateCommentDate, scrolling } from "@/lib/helper";
+import { scrolling,formatCommentDate } from "@/lib/helper";
 import IsCommentLike from "./IsCommentLike";
 import { User } from "@prisma/client";
 import EditAndDeleteMenu from "./Edit&DeleteMenu";
@@ -172,7 +172,7 @@ const CommentBodyItem = ({
             ) : (
               <Fragment>
                 <span className="text-sm text-zinc-600 dark:text-zinc-400 order-1">
-                  {formateCommentDate(comment.createdAt)}
+                  {formatCommentDate(comment.createdAt)}
                 </span>
                 <IsCommentLike
                   queryKey={queryKey}

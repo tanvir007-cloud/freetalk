@@ -9,7 +9,7 @@ import { DropdownMenuItem } from "../ui/dropdown-menu";
 import { ScrollArea } from "../ui/scroll-area";
 import Avatar from "../Avatar";
 import { User, Notification as NotificationType } from "@prisma/client";
-import { formateCommentDate } from "@/lib/helper";
+import { formatCommentDate } from "@/lib/helper";
 import { MarkRead } from "@/app/actions/MarkRead";
 import Link from "next/link";
 import DeleteNotification from "./DeleteNotification";
@@ -103,7 +103,7 @@ const NotificationDropdown = ({
                       <div className="flex flex-col gap-y-1">
                         <h1>{`${notification.sender.name} ${notification.message}`}</h1>
                         <h1 className="font-medium text-blue-600 dark:text-blue-500">
-                          {formateCommentDate(notification.createdAt)}
+                          {formatCommentDate(notification.createdAt)}
                         </h1>
                       </div>
                     </DropdownMenuItem>

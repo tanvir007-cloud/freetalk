@@ -2,6 +2,7 @@ import {
   differenceInDays,
   differenceInHours,
   differenceInMinutes,
+  differenceInSeconds,
   differenceInWeeks,
   differenceInYears,
   format,
@@ -48,7 +49,7 @@ export const formatMainPageDate = (time: Date) => {
   }
 };
 
-export const formateCommentDate = (date: Date) => {
+export const formatCommentDate = (date: Date) => {
   const now = new Date();
 
   const years = differenceInYears(now, date);
@@ -66,7 +67,10 @@ export const formateCommentDate = (date: Date) => {
   const minutes = differenceInMinutes(now, date);
   if (minutes > 0) return `${minutes}m`;
 
-  return `Just Now`;
+  const seconds = differenceInSeconds(now, date);
+  if (seconds > 5) return `${seconds}s`;
+
+  return `Just now`;
 };
 
 export const isValidObjectId = (id: string): boolean =>

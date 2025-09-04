@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Story } from "@prisma/client";
-import { formateCommentDate } from "@/lib/helper";
+import { formatCommentDate } from "@/lib/helper";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -220,7 +220,7 @@ export default function StoryModal({
                   {story.user.name}
                 </Link>
                 <span className="text-sm">
-                  {formateCommentDate(story.createdAt)}
+                  {formatCommentDate(story.createdAt)}
                 </span>
               </div>
             </div>
